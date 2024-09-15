@@ -1,0 +1,11 @@
+{
+  "welcome": "Welcome to my website",
+  "description": "This is a multi-language React app.",
+  "home": "Home",
+  "our_services": "Our Services",
+  "recruitment_trip": "Recruitment Trip",
+  "about_recruitment": "About Recruitment",
+  "support": "Support",
+  "join_us": "Join Us",
+  "login": "Login"
+}

@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/* eslint-disable no-unused-vars */
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import NavBar from './components/Navbar';
+import { LanguageProvider } from './components/LanguageContext';
+import '../src/i18n.js'; // Ensure this line is present to initialize i18next
 
-function App() {
-  const [count, setCount] = useState(0)
+
+const App = () => {
+  const { i18n } = useTranslation();
+
+  // Function to change the language
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
+  // Change the direction to RTL for Arabic
+  useEffect(() => {
+    document.body.dir = i18n.language === 'ar' ? 'rtl' : 'ltr';
+  }, [i18n.language]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <LanguageProvider>
+      <NavBar changeLanguage={changeLanguage} />
+      <div style={{ padding: '20px', textAlign: i18n.language === 'ar' ? 'right' : 'left' }}>
+        {/* Your content here */}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </LanguageProvider>
+  );
+};
 
-export default App
+export default App;

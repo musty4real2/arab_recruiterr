@@ -1,0 +1,11 @@
+{
+    "welcome": "Bienvenue sur mon site Web",
+    "description": "Ceci est une application React multilingue.",
+    "home": "Accueil",
+    "our_services": "Nos services",
+    "recruitment_trip": "Voyage de recrutement",
+    "about_recruitment": "À propos du recrutement",
+    "support": "Assistance",
+    "join_us": "Rejoignez-nous",
+    "login": "Connexion"
+}
