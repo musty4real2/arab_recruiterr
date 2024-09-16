@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from './LanguageContext'; // Import context hook
+import { useLanguage } from './LanguageContext';
 
-// Import flag images
 import flagEn from '../assets/flags/gb-eng.svg';
 import flagFr from '../assets/flags/fr.svg';
 import flagEs from '../assets/flags/es.svg';
@@ -17,9 +15,9 @@ const languageOptions = {
 };
 
 const NavBar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(null);
-    const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [dropdownOpen, setDropdownOpen] = React.useState(null);
+    const [showLanguageMenu, setShowLanguageMenu] = React.useState(false);
     const { language, changeLanguage } = useLanguage();
     const { t } = useTranslation();
 
@@ -34,6 +32,7 @@ const NavBar = () => {
     };
 
     const parentMenuItems = [
+        t('home'),
         t('our_services'),
         t('recruitment_trip'),
         t('about_recruitment'),
@@ -42,16 +41,11 @@ const NavBar = () => {
         t('login')
     ];
 
-    // Determine if the current language is Arabic
-    const isArabic = language === 'ar';
-
     return (
-        <nav className="bg-blue-600 relative">
+        <nav className="bg-blue-600 fixed top-0 left-0 w-full z-50">
             <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                {/* Left section (language selector and navigation links) */}
-                <div className={`flex items-center ${isArabic ? 'space-x-reverse space-x-4' : 'space-x-6'} flex-1 flex-nowrap`}>
-                    {/* Language selector */}
-                    <div className={`relative ${isArabic ? 'mr-10' : 'mr-6'}`}>
+                <div className="flex items-center flex-1">
+                    <div className={`relative ${language === 'ar' ? 'mr-10' : 'mr-6'}`}>
                         <button
                             className="text-white hover:text-gray-300 focus:outline-none flex items-center"
                             aria-label="Select Language"
@@ -60,7 +54,7 @@ const NavBar = () => {
                             <img src={languageOptions[language].flag} alt="Current Language" width="32" height="24" />
                             <span className="ml-2 text-white">{languageOptions[language].name}</span>
                         </button>
-                        <div className={`absolute top-full ${isArabic ? 'right-0' : 'left-0'} mt-2 bg-white text-gray-800 shadow-lg w-48 ${showLanguageMenu ? 'block' : 'hidden'}`}>
+                        <div className={`absolute top-full ${language === 'ar' ? 'right-0' : 'left-0'} mt-2 bg-white text-gray-800 shadow-lg w-48 ${showLanguageMenu ? 'block' : 'hidden'}`}>
                             {Object.keys(languageOptions).map((key) => (
                                 <button
                                     key={key}
@@ -74,51 +68,31 @@ const NavBar = () => {
                         </div>
                     </div>
 
-                    {/* Desktop links section */}
-                    <div className="hidden lg:flex flex-1">
-                        <div className={`flex items-center ${isArabic ? 'space-x-reverse space-x-6' : 'space-x-6'} flex-nowrap`}>
-                            {/* "Home" link positioned based on language */}
-                            {isArabic && (
-                                <div className="flex-none">
-                                    <a href="#" className="text-white hover:text-gray-300 focus:outline-none">
-                                        {t('home')}
-                                    </a>
+                    <div className={`hidden lg:flex flex-1 ${language === 'ar' ? 'space-x-reverse space-x-6' : 'space-x-6'}`}>
+                        {parentMenuItems.map((item, index) => (
+                            <div key={index} className="relative">
+                                <button
+                                    onClick={() => toggleDropdown(index)}
+                                    className="text-white hover:text-gray-300 focus:outline-none"
+                                >
+                                    {item}
+                                </button>
+                                <div className={`${dropdownOpen === index ? 'block' : 'hidden'} absolute bg-white shadow-lg py-2 w-48 mt-1`}>
+                                    {Array.from({ length: 4 }).map((_, childNum) => (
+                                        <a
+                                            key={childNum}
+                                            href="#"
+                                            className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                        >
+                                            {t('child')} {childNum + 1}
+                                        </a>
+                                    ))}
                                 </div>
-                            )}
-                            {parentMenuItems.map((item, index) => (
-                                <div key={index} className="relative flex-none">
-                                    <button
-                                        onClick={() => toggleDropdown(index)}
-                                        className="text-white hover:text-gray-300 focus:outline-none"
-                                    >
-                                        {item}
-                                    </button>
-                                    {/* Dropdown for Parent link */}
-                                    <div className={`${dropdownOpen === index ? 'block' : 'hidden'} absolute bg-white shadow-lg py-2 w-48 mt-1`}>
-                                        {Array.from({ length: 4 }).map((_, childNum) => (
-                                            <a
-                                                key={childNum}
-                                                href="#"
-                                                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                                            >
-                                                {t('child')} {childNum + 1}
-                                            </a>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))}
-                            {!isArabic && (
-                                <div className="flex-none">
-                                    <a href="#" className="text-white hover:text-gray-300 focus:outline-none">
-                                        {t('home')}
-                                    </a>
-                                </div>
-                            )}
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                {/* Logo positioned on the right */}
                 <div className="flex-none">
                     <img
                         src="https://via.placeholder.com/50"
@@ -127,8 +101,7 @@ const NavBar = () => {
                     />
                 </div>
 
-                {/* Mobile menu toggle button */}
-                <div className="lg:hidden ml-4">
+                <div className="lg:hidden">
                     <button onClick={toggleMenu} className="text-white focus:outline-none">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -137,38 +110,29 @@ const NavBar = () => {
                 </div>
             </div>
 
-            {/* Mobile menu (for small screens) */}
-            <div className={`${isOpen ? 'block' : 'hidden'} lg:hidden`}>
-                <div className="space-y-2 bg-blue-600 text-white px-4 py-4">
-                    <a
-                        href="#"
-                        className="block px-4 py-2 text-white hover:bg-blue-700"
-                    >
-                        {t('home')}
-                    </a>
-                    {parentMenuItems.map((item, index) => (
-                        <div key={index}>
-                            <button
-                                onClick={() => toggleDropdown(index)}
-                                className="w-full text-left px-4 py-2 text-white hover:bg-blue-700 focus:outline-none"
-                            >
-                                {item}
-                            </button>
-                            {/* Mobile dropdown for Parent */}
-                            <div className={`${dropdownOpen === index ? 'block' : 'hidden'} pl-4`}>
-                                {Array.from({ length: 4 }).map((_, childNum) => (
-                                    <a
-                                        key={childNum}
-                                        href="#"
-                                        className="block px-4 py-2 text-gray-200 hover:bg-blue-800"
-                                    >
-                                        {t('child')} {childNum + 1}
-                                    </a>
-                                ))}
-                            </div>
+            {/* Mobile Menu */}
+            <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'} absolute top-full left-0 w-full bg-blue-600 text-white py-4 px-6`}>
+                {parentMenuItems.map((item, index) => (
+                    <div key={index} className="relative mb-2">
+                        <button
+                            onClick={() => toggleDropdown(index)}
+                            className="w-full text-white hover:text-gray-300 focus:outline-none"
+                        >
+                            {item}
+                        </button>
+                        <div className={`${dropdownOpen === index ? 'block' : 'hidden'} bg-white text-gray-800 shadow-lg py-2 w-full mt-1`}>
+                            {Array.from({ length: 4 }).map((_, childNum) => (
+                                <a
+                                    key={childNum}
+                                    href="#"
+                                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                >
+                                    {t('child')} {childNum + 1}
+                                </a>
+                            ))}
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
             </div>
         </nav>
     );

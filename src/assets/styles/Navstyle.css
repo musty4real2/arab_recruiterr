@@ -1,0 +1,44 @@
+/* Assuming you are using Tailwind CSS and/or custom styles */
+
+/* Make sure items fit in one line */
+.flex-1 {
+    flex: 1;
+}
+
+.flex {
+    display: flex;
+}
+
+.space-x-4 {
+    margin-left: -1rem;
+    margin-right: -1rem;
+}
+
+.space-x-6 {
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+}
+
+.space-x-reverse {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+/* Fix potential overflow issues */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+/* Ensure logo is properly aligned */
+.flex-none {
+    flex: none;
+}
+
+@media (min-width: 1024px) {
+    .lg\:flex {
+        display: flex;
+    }
+    .lg\:hidden {
+        display: none;
+    }
+}

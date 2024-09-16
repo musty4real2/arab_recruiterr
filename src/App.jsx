@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
+// App.jsx
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import NavBar from './components/Navbar';
 import { LanguageProvider } from './components/LanguageContext';
 import '../src/i18n.js'; // Ensure this line is present to initialize i18next
-
+import SliderSection from './components/SliderSection.jsx';
+import AboutUs from './components/AboutUs'
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -21,9 +23,12 @@ const App = () => {
 
   return (
     <LanguageProvider>
-      <NavBar changeLanguage={changeLanguage} />
+        <NavBar changeLanguage={changeLanguage} />
+        <SliderSection />
+        <AboutUs />
       <div style={{ padding: '20px', textAlign: i18n.language === 'ar' ? 'right' : 'left' }}>
         {/* Your content here */}
+
       </div>
     </LanguageProvider>
   );
